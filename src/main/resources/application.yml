@@ -1,0 +1,24 @@
+spring.application.name: fuse
+spring:
+  datasource:
+    connectionProperties: useUnicode=true;characterEncoding=UTF-8
+    driverClassName: org.postgresql.Driver
+    password: postgres
+    url: jdbc:postgresql://localhost:5433/fuse
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+app:
+  jwt:
+    jwtSecret: YjJiYThlNmEzYWJjODBmYjI1YjhmZWU4NTRlNGM2ODE4ZWVkZWRhZTgwMjQzYTAyNTc1OWY5NDQ2NmY2ZmQ2NTAwNDc1Zjc5ODBlYTVjOTkxMTkzOTA1ZGI0OGM0Y2E0YzhjMDhiOWRjZjM3Y2NhZjdjZmM1ODUxZWU0NThjMDI=
+    jwtExpirationMs: 200000
+  email:
+    from: "anuragm339@gmail.com"
+    port: 587
+    username: "anuragm339@gmail.com"
+    password: "illb zwaj pxlr mcrs"
+    host: smtp.gmail.com
+    baseUrl: http://localhost:8080
