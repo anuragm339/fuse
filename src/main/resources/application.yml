@@ -19,6 +19,6 @@ app:
     from: "anuragm339@gmail.com"
     port: 587
     username: "anuragm339@gmail.com"
-    password: "illb zwaj pxlr mcrs"
+    password: ""
     host: smtp.gmail.com
     baseUrl: http://localhost:8080
