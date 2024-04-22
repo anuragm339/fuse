@@ -59,7 +59,7 @@ public class TokenServiceImpl implements TokenService {
         model.setUserId(userId);
 
         this.tokenRepository.save(model);
-        return model.getReferenceKey();
+        return model.getToken();
     }
 
     private static UUID getRandomUuid(Random random) {

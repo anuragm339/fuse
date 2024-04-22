@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 @RestController
 public class UserController {
     private final UserService userService;
@@ -35,7 +35,7 @@ public class UserController {
         return "Successfully Activated";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@RequestBody UserRequestDto userRequestDto) {
         if (isPasswordLengthInvalid(userRequestDto.getPassword())) {
@@ -45,7 +45,7 @@ public class UserController {
         emailService.sendActivationEmail(user);
     }
 
-    @PostMapping("/forget-password")
+    @PostMapping("/auth/forgot-password")
     @ResponseStatus(HttpStatus.CREATED)
     public void forgetPassword(@RequestBody String email) {
         Optional<Users> user = userService.forgetPassword(email);
@@ -55,7 +55,7 @@ public class UserController {
         emailService.sendPasswordResetMail(user.get());
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/user/change-password")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Users changePassword(ChangePasswordDto changePasswordDto){
         Users users = userService.changePassword(changePasswordDto);
@@ -68,7 +68,7 @@ public class UserController {
                         password.length() > UserRequestDto.PASSWORD_MAX_LENGTH
         );
     }
-    @PostMapping("/reset-password")
+    @PostMapping("/account/reset-password")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Users resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
         return userService.resetPassword(resetPasswordRequest);

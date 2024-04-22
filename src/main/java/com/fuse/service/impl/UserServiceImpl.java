@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserService {
         newUser.setActive(false);
         newUser.setKey(RandomUtils.getRandomUuid());
         newUser.setRole(RoleEnums.USER.name());
+        newUser.setCompanyName(userRequestDto.getCompany());
+        newUser.setAgreements(userRequestDto.getAgreements());
         return userRepository.save(newUser);
     }
 
@@ -95,6 +97,9 @@ public class UserServiceImpl implements UserService {
                 .map(user -> {
                     user.setResetKey(RandomUtils.getRandomUuid());
                     user.setResetDate(LocalDateTime.now());
+                    if(user.getResetTimes()==null){
+                        user.setResetTimes(0);
+                    }
                     user.setResetTimes(user.getResetTimes()+1);
                     return user;
                 });

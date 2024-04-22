@@ -42,11 +42,11 @@ public class AuthController {
 
     @PostMapping("/auth/sign-in")
     public ResponseEntity<JwtResponse> authenticate(@RequestBody LoginDto loginRequest){
-        Optional<Users> user = this.userService.getUserByUserName(loginRequest.getUsername());
+        Optional<Users> user = this.userService.getUserByUserName(loginRequest.getEmail());
         if (!user.isPresent() || !user.get().isActive()) {
             throw new UsernameNotFoundException("Unable to find any user, if you are newly registered. Check your email for verification token.");
         }
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         JwtResponse jwt = jwtUtils.generateJwtToken(authentication);

@@ -10,6 +10,8 @@ public class UserRequestDto implements Serializable {
     private String email;
     private String password;
     private String name;
+    private String company;
+    private Boolean agreements;
 
     public String getEmail() {
         return email;
@@ -33,5 +35,21 @@ public class UserRequestDto implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public Boolean getAgreements() {
+        return agreements;
+    }
+
+    public void setAgreements(Boolean agreements) {
+        this.agreements = agreements;
     }
 }
