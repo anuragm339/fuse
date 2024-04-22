@@ -27,6 +27,10 @@ public class Users {
     @JsonIgnore
     private Integer resetTimes;
 
+    private String companyName;
+
+    private Boolean agreements;
+
     public String getName() {
         return name;
     }
@@ -116,5 +120,21 @@ public class Users {
             return false;
         }
         return true;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public Boolean getAgreements() {
+        return agreements;
+    }
+
+    public void setAgreements(Boolean agreements) {
+        this.agreements = agreements;
     }
 }

@@ -1,5 +1,6 @@
 package com.fuse.configuration;
 
+import com.fuse.enums.RoleEnums;
 import com.fuse.security.UnAuthorizedEntryPointJwt;
 import com.fuse.security.AuthTokenFilter;
 import com.fuse.security.UserDetailServiceImpl;
@@ -16,6 +17,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -23,6 +33,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration{
     private final UserDetailServiceImpl userDetailsService;
     private final UnAuthorizedEntryPointJwt unAuthorizedEntryPointJwt;
+
+    private static final String[] SWAGGER_WHITELIST = {
+            "/swagger-ui/**", "/v3/api-docs/**",
+            "/swagger-resources/**", "/swagger-resources"
+    };
 
     public SecurityConfiguration(UserDetailServiceImpl userDetailsService, UnAuthorizedEntryPointJwt unAuthorizedEntryPointJwt){
         this.userDetailsService=userDetailsService;
@@ -63,9 +78,11 @@ public class SecurityConfiguration{
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/sign-in").permitAll()
                                 .requestMatchers("/api/admin/**").permitAll()
+                                .requestMatchers(SWAGGER_WHITELIST).permitAll()
                                 .requestMatchers("/api/user/activate").permitAll()
-                                .requestMatchers("/api/user/register").permitAll()
-                                .requestMatchers("/api/user/**").authenticated()
+                                .requestMatchers("/api/auth/sign-up").permitAll()
+                                .requestMatchers("/api/auth/forgot-password").permitAll()
+                                .requestMatchers("/api/user/**").hasAnyRole(RoleEnums.USER.name(), RoleEnums.ADMIN.name())
                 );
 
         http.authenticationProvider(authenticationProvider());
@@ -74,5 +91,4 @@ public class SecurityConfiguration{
 
         return http.build();
     }
-
 }

@@ -15,15 +15,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class AuthController {
     private final UserService userService;
@@ -46,11 +42,11 @@ public class AuthController {
 
     @PostMapping("/auth/sign-in")
     public ResponseEntity<JwtResponse> authenticate(@RequestBody LoginDto loginRequest){
-        Optional<Users> user = this.userService.getUserByUserName(loginRequest.getUsername());
+        Optional<Users> user = this.userService.getUserByUserName(loginRequest.getEmail());
         if (!user.isPresent() || !user.get().isActive()) {
             throw new UsernameNotFoundException("Unable to find any user, if you are newly registered. Check your email for verification token.");
         }
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         JwtResponse jwt = jwtUtils.generateJwtToken(authentication);
